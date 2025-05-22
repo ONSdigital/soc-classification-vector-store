@@ -30,8 +30,8 @@ The service is built using:
 ### Search Index Endpoint
 - **Path**: `/v1/soc-vector-store/search-index`
 - **Method**: POST
-- **Description**: Performs similarity search on SIC code descriptions
-- **Request Body**:
+- **Description**: Performs similarity search on SOC code descriptions
+- **Request Body**: Note: TODO update this with appropriate SOC response body, once built
   ```json
   {
     "industry_descr": "string",
