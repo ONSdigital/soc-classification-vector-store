@@ -6,7 +6,7 @@ It defines the configuration endpoint and returns the current configuration sett
 
 from fastapi import APIRouter, Depends
 
-from soc_classification_vector_store.api.models.status import StatusResponse
+from soc_classification_vector_store.api.models.status_models import StatusResponse
 from soc_classification_vector_store.utils.common import safe_int
 from soc_classification_vector_store.utils.vector_store import vector_store_manager
 
@@ -31,9 +31,9 @@ async def get_status(vector_store=vector_store_dependency) -> StatusResponse:
         embedding_model_name=str(vector_store.status.get("embedding_model_name", "")),
         llm_model_name=str(vector_store.status.get("llm_model_name", "")),
         db_dir=str(vector_store.status.get("db_dir", "")),
-        sic_index_file=str(vector_store.status.get("sic_index", "")),
-        sic_structure_file=str(vector_store.status.get("sic_structure", "")),
-        sic_condensed_file=str(vector_store.status.get("sic_condensed", "")),
+        soc_index_file=str(vector_store.status.get("soc_index", "")),
+        soc_structure_file=str(vector_store.status.get("soc_structure", "")),
+        #soc_condensed_file=str(vector_store.status.get("soc_condensed", "")),
         matches=safe_int(vector_store.status.get("matches", 0)),
         index_size=safe_int(vector_store.status.get("index_size", 0)),
     )

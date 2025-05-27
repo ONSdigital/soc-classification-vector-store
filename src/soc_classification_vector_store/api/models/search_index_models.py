@@ -22,16 +22,11 @@ class SearchIndexItem(BaseModel):
         distance (float): vector search distance.
         title (str): soc title description.
         code (str): soc code.
-        four_digit_code (str): four digit soc code.
-        two_digit_code (str): two digit soc code.
     """
 
     distance: float
     title: str
     code: str
-    four_digit_code: str
-    two_digit_code: str
-
 
 class SearchIndexResponse(BaseModel):
     """Model representing the vector store search index multi response."""
