@@ -13,7 +13,7 @@ from soc_classification_vector_store.utils.vector_store import vector_store_mana
 router = APIRouter(tags=["Status"])
 
 # Define the dependency at module level
-vector_store_dependency = Depends(lambda : vector_store_manager)
+vector_store_dependency = Depends(lambda: vector_store_manager)
 
 
 @router.get("/status", response_model=StatusResponse)
@@ -33,7 +33,7 @@ async def get_status(vector_store=vector_store_dependency) -> StatusResponse:
         db_dir=str(vector_store.status.get("db_dir", "")),
         soc_index_file=str(vector_store.status.get("soc_index", "")),
         soc_structure_file=str(vector_store.status.get("soc_structure", "")),
-        #soc_condensed_file=str(vector_store.status.get("soc_condensed", "")),
+        # soc_condensed_file=str(vector_store.status.get("soc_condensed", "")),
         matches=safe_int(vector_store.status.get("matches", 0)),
         index_size=safe_int(vector_store.status.get("index_size", 0)),
     )

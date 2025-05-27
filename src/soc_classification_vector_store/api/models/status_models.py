@@ -22,6 +22,6 @@ class StatusResponse(BaseModel):
     db_dir: str
     soc_index_file: str
     soc_structure_file: str
-    #soc_condensed_file: str
+    # soc_condensed_file: str
     matches: int
     index_size: int

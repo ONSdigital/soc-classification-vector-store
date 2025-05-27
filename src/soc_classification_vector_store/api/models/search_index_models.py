@@ -9,7 +9,8 @@ from pydantic import BaseModel
 
 class SearchIndexRequest(BaseModel):
     """Model representing a request to the vector store search index."""
-    #TODO: check what fields are required for SOC
+
+    # TODO: check what fields are required for SOC
     industry_descr: str
     job_title: str
     job_description: str
@@ -27,6 +28,7 @@ class SearchIndexItem(BaseModel):
     distance: float
     title: str
     code: str
+
 
 class SearchIndexResponse(BaseModel):
     """Model representing the vector store search index multi response."""

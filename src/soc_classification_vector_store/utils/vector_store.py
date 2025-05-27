@@ -5,9 +5,8 @@ This module contains utility functions to manage the vector store interface.
 
 import logging
 import os
-from threading import Event
-
 from importlib.resources import files
+from threading import Event
 
 from occupational_classification_utils.embed.embedding import (
     EmbeddingHandler,
@@ -88,7 +87,7 @@ class VectorStoreManager:
         self.embed = load_vector_store()
         self.status = self.embed.get_embed_config()
 
-    def search( #TODO: check what search terms are needed for SOC
+    def search(  # TODO: check what search terms are needed for SOC
         self, industry_descr: str = "", job_title: str = "", job_description: str = ""
     ):
         """Search the vector store with the given parameters.
