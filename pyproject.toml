@@ -15,8 +15,10 @@ python = "^3.12"
 fastapi = "^0.115.11"
 uvicorn = "^0.34.0"
 pydantic = "^2.10.6"
-# Commenting out soc-classification-utils until a release is available
+google-cloud-logging = "^3.9.0"
+
 soc-classification-utils = { git = "https://github.com/ONSdigital/soc-classification-utils.git", tag = "v0.1.0" }
+survey-assist-utils = { git = "https://github.com:ONSdigital/survey-assist-utils.git", tag = "v0.0.1" }
 
 [tool.isort]
 profile = "black"

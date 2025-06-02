@@ -4,8 +4,6 @@ This module contains the search endpoint for the SOC Vector Store API.
 It defines the search endpoint and returns search results from the vector store.
 """
 
-import logging
-
 from fastapi import APIRouter, HTTPException, Request
 
 from soc_classification_vector_store.api.models.search_index_models import (
@@ -14,7 +12,9 @@ from soc_classification_vector_store.api.models.search_index_models import (
 )
 from soc_classification_vector_store.utils.vector_store import vector_store_manager
 
-logger = logging.getLogger(__name__)
+from survey_assist_utils.logging import get_logger
+
+logger = get_logger(__name__, level='INFO')
 
 router: APIRouter = APIRouter()
 
@@ -44,13 +44,13 @@ async def post_search_index(
         logger.info("Search completed successfully")
         return SearchIndexResponse(results=search_results)
     except RuntimeError as e:
-        logger.error("Vector store error: %s", e, exc_info=True)
+        logger.error("Vector store error: %s" % (e), exc_info=True)
         raise HTTPException(
             status_code=503,
             detail=str(e),
         ) from e
     except Exception as e:
-        logger.error("Error searching vector store: %s", e, exc_info=True)
+        logger.error("Error searching vector store: %s" % (e), exc_info=True)
         raise HTTPException(
             status_code=500,
             detail=f"Error searching vector store: {e!s}",

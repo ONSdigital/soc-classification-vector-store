@@ -2,8 +2,6 @@
 
 This module contains utility functions to manage the vector store interface.
 """
-
-import logging
 import os
 from importlib.resources import files
 from threading import Event
@@ -13,9 +11,9 @@ from occupational_classification_utils.embed.embedding import (
     embedding_config,
 )
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+from survey_assist_utils.logging import get_logger
+
+logger = get_logger(__name__, level='DEBUG')
 
 # Shared variables and events
 vector_store_ready_event = Event()
@@ -43,16 +41,16 @@ SOC_STRUCTURE_TUPLE = (PATH_REF, SOC_STRUCTURE_FILE)
 def load_vector_store() -> EmbeddingHandler:
     """Load the vector store."""
     # Create the embeddings index
-    logger.info("Loading the vector store - db_dir: %s", VECTOR_STORE_DIR)
+    logger.info("Loading the vector store - db_dir: %s" %(VECTOR_STORE_DIR))
     embed = EmbeddingHandler(db_dir=VECTOR_STORE_DIR)
-
-    logger.info("Loading the vector store - soc_index_file: %s", SOC_INDEX_TUPLE)
-    logger.info(
-        "Loading the vector store - soc_structure_file: %s", SOC_STRUCTURE_TUPLE
-    )
 
     index_file_path = files(SOC_INDEX_TUPLE[0]).joinpath(SOC_INDEX_TUPLE[1])
     structure_file_path = files(SOC_STRUCTURE_TUPLE[0]).joinpath(SOC_STRUCTURE_TUPLE[1])
+
+    logger.info("Loading the vector store - soc_index_file: %s" % (index_file_path))
+    logger.info(
+        "Loading the vector store - soc_structure_file: %s" % (structure_file_path)
+    )
 
     embed.embed_index(
         from_empty=False,
@@ -63,7 +61,7 @@ def load_vector_store() -> EmbeddingHandler:
         embed.get_embed_config()
     )
 
-    logger.info("Vector store status: %s", vector_store_status)
+    logger.info("Vector store status: %s" % (vector_store_status))
     logger.info("Vector store loaded")
     return embed
 
