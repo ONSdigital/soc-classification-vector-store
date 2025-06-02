@@ -46,7 +46,7 @@ async def lifespan(_app: FastAPI):
 
 
 app: FastAPI = FastAPI(
-    title="SIC Vector Store API",
+    title="SOC Vector Store API",
     description="API for interacting with SOC Vector Store",
     version="1.0",
     lifespan=lifespan,
