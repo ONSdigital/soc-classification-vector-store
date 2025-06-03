@@ -47,7 +47,7 @@ async def post_search_index(
         logger.error("Vector store error: %s" % (e), exc_info=True)
         raise HTTPException(
             status_code=503,
-            detail=str(e),
+            detail="Vector store error: %s" % (e),
         ) from e
     except Exception as e:
         logger.error("Error searching vector store: %s" % (e), exc_info=True)
