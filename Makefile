@@ -11,7 +11,7 @@ clean: ## Clean the temporary files.
 	rm -rf .ruff_cache	
 
 # Make does not like interpreting : in the target name, so we use a variable
-API_CMD=poetry run uvicorn soc_classification_vector_store.api.main:app --host 0.0.0.0 --port 8088 --reload
+API_CMD=poetry run uvicorn soc_classification_vector_store.api.main:app --host 0.0.0.0 --port 8089 --reload
 
 .PHONY: run-vector-store
 run-vector-store: ## Run the vectore store and API
@@ -77,7 +77,7 @@ docker-image: ## Build the Docker image
 
 .PHONY: run-docker-image
 run-docker-image: ## Run the Docker image
-	docker run -p 8088:8088 vector-store
+	docker run -p 8089:8089 vector-store
 
 .PHONY: docker-clean
 docker-clean: ## Clean Docker resources
