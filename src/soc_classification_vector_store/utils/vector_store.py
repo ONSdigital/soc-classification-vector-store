@@ -2,8 +2,8 @@
 
 This module contains utility functions to manage the vector store interface.
 """
+import logging
 import os
-from importlib.resources import files
 from threading import Event
 
 from occupational_classification_utils.embed.embedding import (
@@ -11,9 +11,8 @@ from occupational_classification_utils.embed.embedding import (
     embedding_config,
 )
 
-from survey_assist_utils.logging import get_logger
-
-logger = get_logger(__name__, level='DEBUG')
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Shared variables and events
 vector_store_ready_event = Event()
@@ -41,27 +40,23 @@ SOC_STRUCTURE_TUPLE = (PATH_REF, SOC_STRUCTURE_FILE)
 def load_vector_store() -> EmbeddingHandler:
     """Load the vector store."""
     # Create the embeddings index
-    logger.info("Loading the vector store - db_dir: %s" %(VECTOR_STORE_DIR))
+    logger.info("Loading the vector store - db_dir: %s", VECTOR_STORE_DIR)
     embed = EmbeddingHandler(db_dir=VECTOR_STORE_DIR)
 
-    index_file_path = files(SOC_INDEX_TUPLE[0]).joinpath(SOC_INDEX_TUPLE[1])
-    structure_file_path = files(SOC_STRUCTURE_TUPLE[0]).joinpath(SOC_STRUCTURE_TUPLE[1])
-
-    logger.info("Loading the vector store - soc_index_file: %s" % (index_file_path))
+    logger.info("Loading the vector store - soc_index_file: %s", SOC_INDEX_TUPLE)
     logger.info(
-        "Loading the vector store - soc_structure_file: %s" % (structure_file_path)
+        "Loading the vector store - soc_structure_file: %s", SOC_STRUCTURE_TUPLE
     )
-
     embed.embed_index(
         from_empty=False,
-        soc_index_file=index_file_path,
-        soc_structure_file=structure_file_path,
+        soc_index_file=SOC_INDEX_TUPLE,
+        soc_structure_file=SOC_STRUCTURE_TUPLE,
     )
     vector_store_status = (  # pylint: disable=redefined-outer-name
         embed.get_embed_config()
     )
 
-    logger.info("Vector store status: %s" % (vector_store_status))
+    logger.info("Vector store status: %s", vector_store_status)
     logger.info("Vector store loaded")
     return embed
 
