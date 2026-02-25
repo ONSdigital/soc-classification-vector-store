@@ -35,13 +35,13 @@ steps:
         
         echo === Run smoke tests against deployed service ===
         export SA_ID_TOKEN=$(gcloud auth print-identity-token --impersonate-service-account=$_API_SA)
-        export SOC_VECTOR_STORE_URL=$(gcloud parametermanager parameters versions describe $_ENV_NAME --parameter=infra-test-config --location=global --project $_CICD_PROJECT_ID --format=json | python3 -c "import sys, json; print(json.load(sys.stdin)['payload']['data'])" | base64 --decode | python3 -c "import sys, json; print(json.load(sys.stdin)['cr-soc-url'])")/$_API_VERSION/soc-vector-store
+        export SOC_VECTOR_STORE_URL=$(gcloud parametermanager parameters versions describe $_ENV_NAME --parameter=infra-test-config --location=global --project $PROJECT_ID --format=json | python3 -c "import sys, json; print(json.load(sys.stdin)['payload']['data'])" | base64 --decode | python3 -c "import sys, json; print(json.load(sys.stdin)['cr-soc-url'])")/$_API_VERSION/soc-vector-store
         
         poetry run pytest cicd
 
     id: Run unit tests, build, tag, push, deploy and run smoke tests
     entrypoint: bash
 
-timeout: 1800s
+timeout: 2000s
 options:
   logging: CLOUD_LOGGING_ONLY
