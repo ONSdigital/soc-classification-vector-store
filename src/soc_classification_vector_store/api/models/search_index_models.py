@@ -10,7 +10,6 @@ from pydantic import BaseModel
 class SearchIndexRequest(BaseModel):
     """Model representing a request to the vector store search index."""
 
-    # TODO: check what fields are required for SOC
     industry_descr: str
     job_title: str
     job_description: str
