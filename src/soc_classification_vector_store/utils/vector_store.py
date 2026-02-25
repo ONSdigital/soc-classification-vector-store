@@ -2,7 +2,7 @@
 
 This module contains utility functions to manage the vector store interface.
 """
-import logging
+
 import os
 from threading import Event
 
@@ -10,9 +10,9 @@ from occupational_classification_utils.embed.embedding import (
     EmbeddingHandler,
     embedding_config,
 )
+from survey_assist_utils.logging import get_logger
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__, level="DEBUG")
 
 # Shared variables and events
 vector_store_ready_event = Event()
@@ -40,13 +40,11 @@ SOC_STRUCTURE_TUPLE = (PATH_REF, SOC_STRUCTURE_FILE)
 def load_vector_store() -> EmbeddingHandler:
     """Load the vector store."""
     # Create the embeddings index
-    logger.info("Loading the vector store - db_dir: %s", VECTOR_STORE_DIR)
+    logger.info(f"Loading the vector store - db_dir: {VECTOR_STORE_DIR}")
     embed = EmbeddingHandler(db_dir=VECTOR_STORE_DIR)
 
-    logger.info("Loading the vector store - soc_index_file: %s", SOC_INDEX_TUPLE)
-    logger.info(
-        "Loading the vector store - soc_structure_file: %s", SOC_STRUCTURE_TUPLE
-    )
+    logger.info(f"Loading the vector store - soc_index_file: {SOC_INDEX_TUPLE}")
+    logger.info(f"Loading the vector store - soc_structure_file: {SOC_STRUCTURE_TUPLE}")
     embed.embed_index(
         from_empty=False,
         soc_index_file=SOC_INDEX_TUPLE,
@@ -56,7 +54,7 @@ def load_vector_store() -> EmbeddingHandler:
         embed.get_embed_config()
     )
 
-    logger.info("Vector store status: %s", vector_store_status)
+    logger.info(f"Vector store status: {vector_store_status}")
     logger.info("Vector store loaded")
     return embed
 
@@ -80,7 +78,7 @@ class VectorStoreManager:
         self.embed = load_vector_store()
         self.status = self.embed.get_embed_config()
 
-    def search(  # TODO: check what search terms are needed for SOC
+    def search(
         self, industry_descr: str = "", job_title: str = "", job_description: str = ""
     ):
         """Search the vector store with the given parameters.
