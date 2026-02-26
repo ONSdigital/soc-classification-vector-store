@@ -2,6 +2,7 @@
 
 This module contains utility functions to manage the vector store interface.
 """
+
 import logging
 import os
 from threading import Event

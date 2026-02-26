@@ -9,6 +9,7 @@ from threading import Thread
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from survey_assist_utils.logging import get_logger
 
 from soc_classification_vector_store.api.routes.v1.search_index import (
     router as search_index_router,
@@ -16,9 +17,8 @@ from soc_classification_vector_store.api.routes.v1.search_index import (
 from soc_classification_vector_store.api.routes.v1.status import router as status_router
 from soc_classification_vector_store.utils.vector_store import vector_store_manager
 
-from survey_assist_utils.logging import get_logger
+logger = get_logger(__name__, level="INFO")
 
-logger = get_logger(__name__, level='INFO')
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
