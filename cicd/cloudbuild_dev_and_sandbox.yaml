@@ -1,0 +1,47 @@
+steps:
+  - name: gcr.io/$PROJECT_ID/testrunner
+    args:
+      - '-c'
+      - |
+        set -e
+        gcloud --version
+        make --version
+        pip --version
+        python --version
+        pytest --version
+        poetry --version
+
+        echo === Install dependencies for tests ===
+        poetry install
+
+        echo === Running unit tests ===
+        poetry run pytest -m utils --ignore=cicd --cov=soc_classification_vector_store.utils --cov-report=term-missing --cov-fail-under=80 --cov-config=.coveragerc
+        
+        echo === Download index and structure files from GCS ===
+        gsutil cp $_VECTOR_STORE_DIR/$_SOC_INDEX_FILE src/soc_classification_vector_store/data/soc_index
+        gsutil cp $_VECTOR_STORE_DIR/$_SOC_STRUCTURE_FILE src/soc_classification_vector_store/data/soc_index
+
+        echo === Build Docker image, tag and push to GAR ===
+        docker build -t $_GAR_SOC_VECTOR_STORE_IMAGE:$SHORT_SHA -t $_GAR_SOC_VECTOR_STORE_IMAGE:latest .
+
+        docker push $_GAR_SOC_VECTOR_STORE_IMAGE:latest
+        docker push $_GAR_SOC_VECTOR_STORE_IMAGE:$SHORT_SHA
+
+        echo === Deploy cloud run service ===
+        gcloud run deploy soc-vector-store --image=$_GAR_SOC_VECTOR_STORE_IMAGE:$SHORT_SHA --region $LOCATION --project $_TARGET_PROJECT_ID
+        
+        echo === Waiting 5 minutes to allow API to get ready... ===
+        sleep 300
+        
+        echo === Run smoke tests against deployed service ===
+        export SA_ID_TOKEN=$(gcloud auth print-identity-token --impersonate-service-account=$_API_SA)
+        export SOC_VECTOR_STORE_URL=$(gcloud parametermanager parameters versions describe $_ENV_NAME --parameter=infra-test-config --location=global --project $PROJECT_ID --format=json | python3 -c "import sys, json; print(json.load(sys.stdin)['payload']['data'])" | base64 --decode | python3 -c "import sys, json; print(json.load(sys.stdin)['cr-soc-url'])")/$_API_VERSION/soc-vector-store
+        
+        poetry run pytest cicd
+
+    id: Run unit tests, build, tag, push, deploy and run smoke tests
+    entrypoint: bash
+
+timeout: 2000s
+options:
+  logging: CLOUD_LOGGING_ONLY

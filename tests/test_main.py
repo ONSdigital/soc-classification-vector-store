@@ -21,7 +21,6 @@ from http import HTTPStatus
 
 import pytest
 from fastapi.testclient import TestClient
-from fastapi.responses import JSONResponse
 
 from soc_classification_vector_store.api.main import (
     app,  # Adjust the import based on your project structure
@@ -70,7 +69,7 @@ def test_get_config():
     assert response.json()["db_dir"] == "unknown"
     assert response.json()["soc_index_file"] == "unknown"
     assert response.json()["soc_structure_file"] == "unknown"
-    #assert response.json()["soc_condensed_file"] == "unknown"
+    # assert response.json()["soc_condensed_file"] == "unknown"
     assert response.json()["matches"] == 0
     assert response.json()["index_size"] == 0
 
@@ -105,7 +104,7 @@ def test_status_ready():
                 assert data["db_dir"] != "unknown"
                 assert data["soc_index_file"] != "unknown"
                 assert data["soc_structure_file"] != "unknown"
-                #assert data["soc_condensed_file"] != "unknown"
+                # assert data["soc_condensed_file"] != "unknown"
                 assert data["matches"] > 0
                 assert data["index_size"] > 0
                 break
@@ -118,12 +117,13 @@ def test_status_ready():
             # Wait before polling again
             time.sleep(POLL_INTERVAL)
 
+
 @pytest.mark.api
 def test_search_index():
     """Test `/v1/soc-vector-store/search-index` endpoint.
     If the Vector Store is ready, this should give a 200 response.
-    If it is not ready, it should return a 503 error with a 
-    message that there is an error querying the vector store. 
+    If it is not ready, it should return a 503 error with a
+    message that there is an error querying the vector store.
 
     Assertions:
     - The response status code is 200 or 503
@@ -133,11 +133,10 @@ def test_search_index():
     payload = {
         "industry_descr": "string",
         "job_title": "string",
-        "job_description": "string"
+        "job_description": "string",
     }
     with TestClient(app) as client:  # pylint: disable=redefined-outer-name
         response = client.post("/v1/soc-vector-store/search-index", json=payload)
         assert response.status_code in (HTTPStatus.OK, 503)
         if response.status_code == 503:
             assert response.json()["detail"].startswith("Vector store error:")
-

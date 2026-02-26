@@ -5,6 +5,7 @@ It defines the search endpoint and returns search results from the vector store.
 """
 
 from fastapi import APIRouter, HTTPException, Request
+from survey_assist_utils.logging import get_logger
 
 from soc_classification_vector_store.api.models.search_index_models import (
     SearchIndexRequest,
@@ -12,9 +13,7 @@ from soc_classification_vector_store.api.models.search_index_models import (
 )
 from soc_classification_vector_store.utils.vector_store import vector_store_manager
 
-from survey_assist_utils.logging import get_logger
-
-logger = get_logger(__name__, level='INFO')
+logger = get_logger(__name__, level="INFO")
 
 router: APIRouter = APIRouter()
 

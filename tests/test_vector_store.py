@@ -15,8 +15,10 @@ def test_load_vector_store(mocker):
         "soc_classification_vector_store.utils.vector_store.EmbeddingHandler"
     )
     mock_embed_instance = mock_embed_handler.return_value
-    mock_embed_instance.get_embed_config.return_value = {"status": "mocked",
-                                                         "llm": {"embedding_model_name":"text-embedding-004"}}
+    mock_embed_instance.get_embed_config.return_value = {
+        "status": "mocked",
+        "llm": {"embedding_model_name": "text-embedding-004"},
+    }
 
     embed = load_vector_store()
 
