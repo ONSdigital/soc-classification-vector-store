@@ -7,7 +7,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
 
-class TestSOCVectorStoreApi:
+class TestSocVectorStoreApi:
     """Test for the SOC Vector Store API."""
 
     url_base = os.environ.get("SOC_VECTOR_STORE_URL")
@@ -18,7 +18,7 @@ class TestSOCVectorStoreApi:
     if id_token is None:
         raise ValueError("SA_ID_TOKEN environment variable is not set.")
 
-    def test_SOC_vector_store_api_status(self) -> None:
+    def test_soc_vector_store_api_status(self) -> None:
         """Test SOC Vector Store API returns successful /status response."""
         endpoint = f"{self.url_base}/status"
 
@@ -33,7 +33,7 @@ class TestSOCVectorStoreApi:
             response.status_code == 200  # noqa: PLR2004
         ), f"Expected status code 200, but got {response.status_code}."
 
-    def test_SOC_vector_store_api_search_index(self) -> None:
+    def test_soc_vector_store_api_search_index(self) -> None:
         """Test SOC Vector Store API returns successful /search-index response."""
         retry_strategy = Retry(
             total=5,  # maximum number of retries
