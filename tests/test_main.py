@@ -20,11 +20,9 @@ from http import HTTPStatus
 
 import pytest
 from fastapi.testclient import TestClient
-from survey_assist_utils.logging import get_logger
 
 from soc_classification_vector_store.api.main import app
 
-logger = get_logger(__name__)
 client = TestClient(app)  # Create a test client for your FastAPI app
 
 MAX_WAIT_TIME = 8 * 60  # 8 minutes in seconds
