@@ -22,7 +22,7 @@ steps:
         docker push $$SOC_IMAGE_RELEASES:$TAG_NAME
 
         echo === Deploy cloud run service ===
-        gcloud run deploy sic-classification-vector-store --image=$$SOC_IMAGE_RELEASES:$TAG_NAME --region $LOCATION --project $$PREPROD_PROJECT_ID
+        gcloud run deploy soc-vector-store --image=$$SOC_IMAGE_RELEASES:$TAG_NAME --region $LOCATION --project $$PREPROD_PROJECT_ID
 
         export SOC_VECTOR_STORE_URL="$$SOC_URL/$_API_VERSION/soc-vector-store"
         export SA_ID_TOKEN=`gcloud auth print-identity-token --impersonate-service-account=$$API_SA`
@@ -35,6 +35,6 @@ steps:
 
     id: Tag and push release image, deploy to preprod and run smoke tests
     entrypoint: bash
-timeout: 1000s
+timeout: 2000s
 options:
   logging: CLOUD_LOGGING_ONLY
