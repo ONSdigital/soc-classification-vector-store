@@ -6,17 +6,22 @@ This module contains utility functions to manage the vector store interface.
 import os
 from threading import Event
 
-from occupational_classification_utils.embed.embedding import (
-    EmbeddingHandler,
-    embedding_config,
-)
+from occupational_classification_utils.embed.embedding import EmbeddingHandler
 from survey_assist_utils.logging import get_logger
 
 logger = get_logger(__name__, level="DEBUG")
 
 # Shared variables and events
 vector_store_ready_event = Event()
-vector_store_status = embedding_config
+vector_store_status = {
+    "llm_model_name": "unknown",
+    "embedding_model_name": "unknown",
+    "db_dir": "unknown",
+    "soc_index": "unknown",
+    "soc_structure": "unknown",
+    "matches": 0,
+    "index_size": 0,
+}
 
 # Configuration from environment variables with defaults
 VECTOR_STORE_DIR = os.getenv(
@@ -46,7 +51,7 @@ def load_vector_store() -> EmbeddingHandler:
     logger.info(f"Loading the vector store - soc_index_file: {SOC_INDEX_TUPLE}")
     logger.info(f"Loading the vector store - soc_structure_file: {SOC_STRUCTURE_TUPLE}")
     embed.embed_index(
-        from_empty=False,
+        from_empty=True,
         soc_index_file=SOC_INDEX_TUPLE,
         soc_structure_file=SOC_STRUCTURE_TUPLE,
     )
