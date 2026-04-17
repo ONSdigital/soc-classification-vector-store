@@ -51,7 +51,7 @@ def load_vector_store() -> EmbeddingHandler:
     logger.info(f"Loading the vector store - soc_index_file: {SOC_INDEX_TUPLE}")
     logger.info(f"Loading the vector store - soc_structure_file: {SOC_STRUCTURE_TUPLE}")
     embed.embed_index(
-        from_empty=True,
+        from_empty=False,
         soc_index_file=SOC_INDEX_TUPLE,
         soc_structure_file=SOC_STRUCTURE_TUPLE,
     )
