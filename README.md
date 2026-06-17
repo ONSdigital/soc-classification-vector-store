@@ -1,5 +1,14 @@
 # SOC Classification Vector Store
 
+![Status: Retiring](https://img.shields.io/badge/status-retiring-orange)
+
+
+> [!WARNING]
+> **Repository retirement notice**
+>
+> This repository will be retired in the coming months as the functionality is being moved elsewhere.
+> Existing code remains available for reference, but new development should be directed to the replacement repositories  (survey-assist-embed-core and/or survey-assist-classification-core).
+
 A stand alone vector store used for SOC classification
 
 ## STATUS: Work In Progress
